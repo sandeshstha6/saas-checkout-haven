@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Check, CreditCard, DollarSign, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const features = [
   "Unlimited access to all features",
@@ -12,6 +12,16 @@ const features = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/signup');
+  };
+
+  const handleSignIn = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -24,13 +34,11 @@ const Index = () => {
           Start your journey today.
         </p>
         <div className="flex gap-4 justify-center">
-          <Button asChild size="lg">
-            <Link to="/signup">
-              Get Started <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+          <Button size="lg" onClick={handleGetStarted}>
+            Get Started <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-          <Button variant="outline" size="lg" asChild>
-            <Link to="/login">Sign In</Link>
+          <Button variant="outline" size="lg" onClick={handleSignIn}>
+            Sign In
           </Button>
         </div>
       </section>
@@ -92,7 +100,7 @@ const Index = () => {
                     </li>
                   ))}
                 </ul>
-                <Button className="w-full mt-8" size="lg">
+                <Button className="w-full mt-8" size="lg" onClick={handleGetStarted}>
                   Get Started
                 </Button>
               </CardContent>
