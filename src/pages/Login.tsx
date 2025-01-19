@@ -17,10 +17,10 @@ const Login = () => {
 
   const getErrorMessage = (error: AuthError) => {
     if (error instanceof AuthApiError) {
-      switch (error.message) {
-        case "Email not confirmed":
+      switch (error.code) {
+        case "email_not_confirmed":
           return "Please check your email and confirm your account before signing in.";
-        case "Invalid login credentials":
+        case "invalid_credentials":
           return "Invalid email or password. Please check your credentials and try again.";
         default:
           return error.message;
