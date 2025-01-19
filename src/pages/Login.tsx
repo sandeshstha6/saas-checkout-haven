@@ -19,18 +19,36 @@ const Login = () => {
     if (error instanceof AuthApiError) {
       switch (error.code) {
         case "email_not_confirmed":
-          return "Please check your email and confirm your account before signing in. If you haven't received the confirmation email, please check your spam folder.";
+          return {
+            title: "Email Not Confirmed",
+            description: "Please check your email and confirm your account before signing in. If you haven't received the confirmation email, please check your spam folder."
+          };
         case "invalid_credentials":
-          return "Invalid email or password. Please check your credentials and try again.";
+          return {
+            title: "Invalid Credentials",
+            description: "Invalid email or password. Please check your credentials and try again."
+          };
         case "invalid_grant":
-          return "Invalid login credentials. Please try again.";
+          return {
+            title: "Invalid Login",
+            description: "Invalid login credentials. Please try again."
+          };
         case "user_not_found":
-          return "No account found with this email address.";
+          return {
+            title: "User Not Found",
+            description: "No account found with this email address."
+          };
         default:
-          return error.message;
+          return {
+            title: "Error",
+            description: error.message
+          };
       }
     }
-    return error.message;
+    return {
+      title: "Error",
+      description: error.message
+    };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,9 +68,9 @@ const Login = () => {
       navigate("/dashboard");
     } catch (error) {
       const authError = error as AuthError;
+      const errorMessage = getErrorMessage(authError);
       toast({
-        title: "Error",
-        description: getErrorMessage(authError),
+        ...errorMessage,
         variant: "destructive",
       });
     } finally {
