@@ -1,11 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, DollarSign, ArrowUpRight } from "lucide-react";
+import { BarChart, Users, DollarSign, ArrowUpRight, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
+  const { user, signOut } = useAuth();
+
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground">
+            {user?.email}
+          </span>
+          <Button variant="outline" onClick={signOut}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
+        </div>
+      </div>
       
       <div className="grid gap-6 md:grid-cols-3 mb-8">
         <Card>
