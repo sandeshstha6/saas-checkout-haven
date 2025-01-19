@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { AuthError } from "@supabase/supabase-js";
+import { AuthError, AuthApiError } from "@supabase/supabase-js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +14,20 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const getErrorMessage = (error: AuthError) => {
+    if (error instanceof AuthApiError) {
+      switch (error.message) {
+        case "Email not confirmed":
+          return "Please check your email and confirm your account before signing in.";
+        case "Invalid login credentials":
+          return "Invalid email or password. Please check your credentials and try again.";
+        default:
+          return error.message;
+      }
+    }
+    return error.message;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +48,7 @@ const Login = () => {
       const authError = error as AuthError;
       toast({
         title: "Error",
-        description: authError.message,
+        description: getErrorMessage(authError),
         variant: "destructive",
       });
     } finally {
