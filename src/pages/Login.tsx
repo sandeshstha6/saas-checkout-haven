@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError, AuthApiError } from "@supabase/supabase-js";
 
@@ -19,9 +19,13 @@ const Login = () => {
     if (error instanceof AuthApiError) {
       switch (error.code) {
         case "email_not_confirmed":
-          return "Please check your email and confirm your account before signing in.";
+          return "Please check your email and confirm your account before signing in. If you haven't received the confirmation email, please check your spam folder.";
         case "invalid_credentials":
           return "Invalid email or password. Please check your credentials and try again.";
+        case "invalid_grant":
+          return "Invalid login credentials. Please try again.";
+        case "user_not_found":
+          return "No account found with this email address.";
         default:
           return error.message;
       }
